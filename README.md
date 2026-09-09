@@ -1,51 +1,89 @@
-# RAG com CSV — Sistema de Recuperação (FAISS) para Primeiros Socorros
+# RAG com CSV + FAISS
 
-Descrição
---------
-Sistema RAG (Retrieval-Augmented Generation) para consultas sobre primeiros socorros usando embeddings e FAISS. Permite construir um índice de vetores a partir de um CSV contendo conteúdo de primeiros socorros e responder perguntas com base apenas no contexto da base.
+Projeto de **Retrieval-Augmented Generation (RAG)** para demonstrar recuperação semântica de conhecimento estruturado em CSV.
 
-Principais tecnologias
-----------------------
+O dataset experimental contém conteúdo de primeiros socorros, mas o objetivo do repositório é demonstrar a **arquitetura RAG**, não fornecer orientação médica.
+
+## Arquitetura
+
+```text
+CSV
+ ↓
+Carregamento e preparação
+ ↓
+Chunking
+ ↓
+Embeddings
+ ↓
+FAISS Vector Store
+ ↓
+Semantic Retrieval
+ ↓
+Contexto recuperado
+ ↓
+LLM
+ ↓
+Resposta contextualizada
+```
+
+## Tecnologias
+
 - Python 3.10+
-- LangChain (integração com LLMs e embeddings)
-- OpenAI (modelos de embeddings e LLM)
-- FAISS (armazenamento e busca vetorial)
-- tiktoken (tokenização compatível)
-- Docker (opcional, para reprodução)
-- GitHub Actions (CI) — opcional
+- LangChain
+- OpenAI embeddings / LLM
+- FAISS
+- tiktoken
+- Docker (estrutura preparada)
+- python-dotenv
 
-Instalação
----------
-1. Clone o repositório:
-   git clone https://github.com/giovanna-albertini/rag-csv-first-aid.git
-2. Crie e ative um ambiente virtual:
-   python -m venv .venv
-   source .venv/bin/activate
-3. Instale dependências:
-   pip install -r requirements.txt
-4. Adicione seu arquivo CSV em `data/` (nome padrão: `base_primeiros_socorros_400.csv`) e configure a variável de ambiente:
-   export OPENAI_API_KEY="sua_chave_aqui"
+## Objetivo técnico
 
-Uso
----
-- Para construir o índice:
-  python -m src.rag_csv_first_aid.main --build-index --csv data/base_primeiros_socorros_400.csv
-- Para consultar:
-  python -m src.rag_csv_first_aid.main --query "Como tratar uma queimadura grave?"
+Demonstrar como uma fonte tabular pode ser convertida em uma base pesquisável semanticamente, permitindo recuperar trechos relevantes antes da geração da resposta.
 
-Estrutura
---------
-- src/rag_csv_first_aid: código principal
-- notebooks: notebook original com experimentos (limpo, sem chaves)
-- data: arquivos CSV (não incluir chaves sensíveis)
-- docker: Dockerfile e configuração
+## Execução
 
-Boas práticas e segurança
-------------------------
-- Nunca commitar chaves de API no repositório. Substitua por variáveis de ambiente.
-- Use `.env` local ou o mecanismo de Secrets do CI para armazenar chaves em ambientes remotos.
-- Valide e sanitize o conteúdo do CSV antes de indexar.
+```bash
+pip install -r requirements.txt
+export OPENAI_API_KEY="sua_chave"
 
-Licença
--------
-MIT (padrão). Mudar se preferir outra.
+python -m src.rag_csv_first_aid.main \
+  --build-index \
+  --csv data/base_primeiros_socorros_400.csv
+
+python -m src.rag_csv_first_aid.main \
+  --query "Pergunta de exemplo"
+```
+
+## Estrutura
+
+```text
+rag-csv-first-aid/
+├── src/
+├── notebooks/
+├── data/
+├── docker/
+├── requirements.txt
+├── .gitignore
+└── LICENSE
+```
+
+## Segurança e limitações
+
+- chaves devem ser fornecidas por variável de ambiente;
+- respostas de LLM podem conter erros;
+- o dataset de demonstração não transforma a aplicação em fonte médica confiável;
+- aplicações de alto risco exigem fontes validadas, avaliação, guardrails e revisão especializada.
+
+## Próximas evoluções
+
+- trocar o domínio de demonstração por documentação técnica;
+- avaliação de retrieval (Recall@K / MRR);
+- reranking;
+- metadata filtering;
+- testes automatizados;
+- FastAPI e containerização executável;
+- tracing de prompts e respostas.
+
+## Competências demonstradas
+
+`RAG` · `Embeddings` · `Vector Search` · `FAISS` · `LangChain` · `LLMs` · `Python` · `AI Engineering`
